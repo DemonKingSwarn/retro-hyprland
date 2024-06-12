@@ -4,7 +4,10 @@ Retro Hyprland is a shader which mimics the look and feel of the old cathode tub
 
 ## Showcase
 
-![](./retro.mp4)
+<video width="320" height="240" controls>
+  <source src="retro.webm" type="video/mp4">
+</video>
+
 
 ## Installation and Enabling the Shader
 

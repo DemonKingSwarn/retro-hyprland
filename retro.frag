@@ -1,9 +1,10 @@
-
+#version 300 es
 precision mediump float;
-varying vec2 v_texcoord;
 
+in vec2 v_texcoord;
 uniform sampler2D tex;
 uniform float time;
+out vec4 fragColor;
 
 void main() {
     vec2 tc = vec2(v_texcoord.x, v_texcoord.y);
@@ -30,9 +31,9 @@ void main() {
     vec2 b_tc = tc - vec2(0.001, 0.0);
 
     vec4 color;
-    color.r = texture2D(tex, r_tc).r;
-    color.g = texture2D(tex, g_tc).g;
-    color.b = texture2D(tex, b_tc).b;
+    color.r = texture(tex, r_tc).r;
+    color.g = texture(tex, g_tc).g;
+    color.b = texture(tex, b_tc).b;
     color.a = 1.0;
 
     // Add scanlines
@@ -40,7 +41,7 @@ void main() {
     color.rgb += scanline;
 
     // Add noise
-    float noise = (fract(sin(dot(tc.xy + vec2(time), vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * 0.04;
+    float noise = (fract(sin(dot(tc.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) * 0.04;
     color.rgb += noise;
 
     // Apply vignette effect
@@ -48,7 +49,7 @@ void main() {
     color.rgb *= vignette;
 
     // Vertical CRT lines with reduced intensity
-    float lines = sin((tc.y + time * 0.1) * 40.0) * 0.02;
+    float lines = sin(tc.y * 40.0) * 0.02;
     color.rgb *= 1.0 - lines;
 
     // Apply retro orange color transformation
@@ -64,6 +65,5 @@ void main() {
         color = vec4(0.0);
 
     // Apply
-    gl_FragColor = color;
+    fragColor = color;
 }
-
